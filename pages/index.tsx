@@ -1,21 +1,7 @@
-import React, { useEffect } from 'react';
-
-import { testQuery } from 'api/queries/test-query';
-
-import Button from 'components/presentationals/Button/Button';
-import Form from 'components/containers/examples/Form/Form';
+import React from 'react';
 
 function Home() {
-  useEffect(() => {
-    testQuery();
-  }, []);
-
-  return (
-    <>
-      <Form />
-      <Button />
-    </>
-  );
+  return <>homepage</>;
 }
 
 export default Home;
