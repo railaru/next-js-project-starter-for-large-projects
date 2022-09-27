@@ -6,10 +6,12 @@ import ListItem from 'components/presentationals/examples/ListItem/ListItem';
 import { QUERY_KEYS } from 'constants/api';
 
 import React, { useState } from 'react';
+import useModalsStore from 'store/modals';
 
 function List() {
   const queryClient = useQueryClient();
   const { data } = useGetListItems();
+  const { setIsEditListItemModalOpened, setEditListItemId } = useModalsStore();
   const [deletingItemId, setDeletingItemId] = useState<null | string>(null);
   const [isFailureSnackbarOpened, setIsFailureSnackbarOpened] = useState(false);
 
@@ -28,6 +30,11 @@ function List() {
     deleteListItemMutation.mutate({ id });
   };
 
+  const handleEditClick = (id: string) => {
+    setIsEditListItemModalOpened(true);
+    setEditListItemId(id);
+  };
+
   const handleSnackBarClose = () => {
     setIsFailureSnackbarOpened(false);
   };
@@ -44,6 +51,7 @@ function List() {
             key={index}
             data={item}
             onDeleteClick={() => handleDeleteClick(item.id)}
+            onEditClick={() => handleEditClick(item.id)}
             isLoading={
               deleteListItemMutation.isLoading && item.id === deletingItemId
             }

@@ -32,7 +32,7 @@ function Form() {
       if (res.errorMessage) {
         setIsFailureSnackbarOpened(true);
       } else {
-        queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST]);
+        queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
         setIsSuccessSnackbarOpened(true);
       }
     },

@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { Cross1Icon } from '@radix-ui/react-icons';
+import { Cross1Icon, Pencil1Icon } from '@radix-ui/react-icons';
 import classNames from 'classnames';
 
 export enum IconNames {
   Cross,
+  Pencil,
 }
 
 export enum IconSizes {
@@ -32,6 +33,9 @@ function IconDisplay({ name, size = IconSizes.Default, className }: Props) {
     <>
       {name === IconNames.Cross && (
         <Cross1Icon className={classNames(combinedClassNames)} />
+      )}
+      {name === IconNames.Pencil && (
+        <Pencil1Icon className={classNames(combinedClassNames)} />
       )}
     </>
   );

@@ -1,0 +1,176 @@
+import { Alert, Grow, IconButton } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+
+import { useGetListItem } from 'api/queries/example-list';
+import IconDisplay, {
+  IconNames,
+  IconSizes,
+} from 'components/presentationals/IconDisplay/IconDisplay';
+import InputFieldSet from 'components/presentationals/InputFieldSet/InputFieldSet';
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+
+import * as yup from 'yup';
+
+import useModalsStore from 'store/modals';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { postListItem } from 'api/mutations/example-list';
+import { QUERY_KEYS } from 'constants/api';
+import Button from 'components/presentationals/Button/Button';
+
+function EditListItemModal() {
+  const {
+    isEditListItemModalOpened,
+    setIsEditListItemModalOpened,
+    editListItemId,
+  } = useModalsStore();
+
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useGetListItem(editListItemId);
+  const [isFailureAlertOpened, setIsFailureAlertOpened] = useState(false);
+
+  const validationSchema = yup.object({
+    title: yup
+      .string()
+      .min(8, 'Minimum 8 characters')
+      .required('Field is required'),
+    description: yup
+      .string()
+      .min(8, 'Minimum 8 characters')
+      .required('Field is required'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      title: data?.values?.title || '',
+      description: data?.values?.description || '',
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      patchListItemMutation.mutate({
+        id: data?.values?.id || '',
+        title: values.title,
+        description: values.description,
+      });
+    },
+  });
+
+  const patchListItemMutation = useMutation(postListItem, {
+    onSuccess: async (res) => {
+      if (res.errorMessage) {
+        setIsFailureAlertOpened(true);
+      } else {
+        queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
+        setIsEditListItemModalOpened(false);
+      }
+    },
+  });
+
+  const handleClose = () => {
+    setIsEditListItemModalOpened(false);
+  };
+
+  const handleAlertClose = () => {
+    setIsFailureAlertOpened(false);
+  };
+
+  const descriptionElementRef = React.useRef<HTMLElement>(null);
+  const {
+    handleChange,
+    values: { title, description },
+    handleSubmit,
+    errors,
+  } = formik;
+
+  useEffect(() => {
+    if (isEditListItemModalOpened) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [isEditListItemModalOpened]);
+
+  useEffect(() => {
+    if (
+      data?.values &&
+      formik.values.title !== data?.values?.title &&
+      formik.values.description !== data?.values?.description
+    ) {
+      formik.setValues({
+        title: data?.values?.title || '',
+        description: data?.values?.description || '',
+      });
+    }
+  }, [data, formik]);
+
+  return (
+    <>
+      <Dialog
+        open={isEditListItemModalOpened}
+        onClose={handleClose}
+        scroll={'paper'}
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+      >
+        <div className="flex items-center justify-between py-4 pl-6 pr-4">
+          <h3 className="text-xl font-medium">Subscribe</h3>
+          <IconButton
+            onClick={() => setIsEditListItemModalOpened(false)}
+            size="large"
+          >
+            <IconDisplay name={IconNames.Cross} size={IconSizes.Large} />
+          </IconButton>
+        </div>
+
+        <DialogContent className="w-[600px]">
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <div>
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <InputFieldSet
+                  labelContent={'Title'}
+                  name={'title'}
+                  value={title}
+                  onChange={handleChange}
+                  validationMessageContent={errors.title}
+                />
+                <InputFieldSet
+                  labelContent={'Description'}
+                  name={'description'}
+                  value={description}
+                  onChange={handleChange}
+                  validationMessageContent={errors.description}
+                />
+              </form>
+              {isFailureAlertOpened && (
+                <Grow in={isFailureAlertOpened} timeout={400}>
+                  <Alert
+                    className="mt-8"
+                    onClose={handleAlertClose}
+                    severity="error"
+                    sx={{ width: '100%' }}
+                  >
+                    Failed to update the item!
+                  </Alert>
+                </Grow>
+              )}
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>
+            {' '}
+            {isLoading ? 'Loading...' : 'Submit'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+
+export default EditListItemModal;

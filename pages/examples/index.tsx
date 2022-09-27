@@ -34,7 +34,10 @@ function Example() {
 export async function getServerSideProps() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery([QUERY_KEYS.EXAMPLE_LIST], fetchListItems);
+  await queryClient.prefetchQuery(
+    [QUERY_KEYS.EXAMPLE_LIST.INDEX],
+    fetchListItems
+  );
 
   return {
     props: {

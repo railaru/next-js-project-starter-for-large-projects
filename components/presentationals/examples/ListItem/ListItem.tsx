@@ -10,12 +10,14 @@ import IconDisplay, {
 interface Props {
   data: ExampleItem;
   onDeleteClick?: () => void;
+  onEditClick?: () => void;
   isLoading?: boolean;
 }
 
 function ListItem({
   data: { title, description },
   onDeleteClick,
+  onEditClick,
   isLoading,
 }: Props) {
   return (
@@ -24,13 +26,18 @@ function ListItem({
         <h3 className="font-bold">{title}</h3>
         <p className="text-sm italic">{description}</p>
       </div>
-      <IconButton disabled={isLoading} size="large" onClick={onDeleteClick}>
-        {isLoading ? (
-          <CircularProgress size={18} color="primary" />
-        ) : (
-          <IconDisplay name={IconNames.Cross} />
-        )}
-      </IconButton>
+      <div className="flex items-center space-x-2">
+        <IconButton disabled={isLoading} size="large" onClick={onEditClick}>
+          <IconDisplay name={IconNames.Pencil} />
+        </IconButton>
+        <IconButton disabled={isLoading} size="large" onClick={onDeleteClick}>
+          {isLoading ? (
+            <CircularProgress size={18} color="primary" />
+          ) : (
+            <IconDisplay name={IconNames.Cross} />
+          )}
+        </IconButton>
+      </div>
     </li>
   );
 }
