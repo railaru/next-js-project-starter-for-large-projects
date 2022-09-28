@@ -1,4 +1,4 @@
-import { Alert, Collapse, Snackbar } from '@mui/material';
+import { Alert, Collapse, Fade, Snackbar } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteListItem } from 'api/mutations/example-list';
 import { useGetListItems } from 'api/queries/example-list';
@@ -9,6 +9,9 @@ import { TransitionGroup } from 'react-transition-group';
 
 import React, { useState } from 'react';
 import useModalsStore from 'store/modals';
+import IconDisplay, {
+  IconNames,
+} from 'components/presentationals/IconDisplay/IconDisplay';
 
 function List() {
   const queryClient = useQueryClient();
@@ -43,6 +46,18 @@ function List() {
 
   if (!data?.values) {
     return null;
+  }
+
+  if (data.values.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center text-center rounded-lg bg-slate-600">
+        <IconDisplay
+          name={IconNames.ViewHorizontal}
+          className="transform scale-[2.5] mb-8"
+        />
+        <p>There are no items in the list yet!</p>
+      </div>
+    );
   }
 
   return (

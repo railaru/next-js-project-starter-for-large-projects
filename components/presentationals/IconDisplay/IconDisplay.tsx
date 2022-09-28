@@ -1,11 +1,16 @@
 import React from 'react';
 
-import { Cross1Icon, Pencil1Icon } from '@radix-ui/react-icons';
+import {
+  Cross1Icon,
+  Pencil1Icon,
+  ViewHorizontalIcon,
+} from '@radix-ui/react-icons';
 import classNames from 'classnames';
 
 export enum IconNames {
   Cross,
   Pencil,
+  ViewHorizontal,
 }
 
 export enum IconSizes {
@@ -36,6 +41,9 @@ function IconDisplay({ name, size = IconSizes.Default, className }: Props) {
       )}
       {name === IconNames.Pencil && (
         <Pencil1Icon className={classNames(combinedClassNames)} />
+      )}
+      {name === IconNames.ViewHorizontal && (
+        <ViewHorizontalIcon className={classNames(combinedClassNames)} />
       )}
     </>
   );
