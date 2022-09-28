@@ -1,9 +1,11 @@
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Collapse, Snackbar } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteListItem } from 'api/mutations/example-list';
 import { useGetListItems } from 'api/queries/example-list';
 import ListItem from 'components/presentationals/examples/ListItem/ListItem';
 import { QUERY_KEYS } from 'constants/api';
+
+import { TransitionGroup } from 'react-transition-group';
 
 import React, { useState } from 'react';
 import useModalsStore from 'store/modals';
@@ -20,7 +22,7 @@ function List() {
       if (res.errorMessage) {
         setIsFailureSnackbarOpened(true);
       } else {
-        queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST]);
+        queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
       }
     },
   });
@@ -45,18 +47,23 @@ function List() {
 
   return (
     <>
-      <ul className="space-y-4">
-        {data.values.map((item, index) => (
-          <ListItem
-            key={index}
-            data={item}
-            onDeleteClick={() => handleDeleteClick(item.id)}
-            onEditClick={() => handleEditClick(item.id)}
-            isLoading={
-              deleteListItemMutation.isLoading && item.id === deletingItemId
-            }
-          />
-        ))}
+      <ul>
+        <TransitionGroup>
+          {data.values.map((item, index) => (
+            <Collapse key={index}>
+              <ListItem
+                key={index}
+                data={item}
+                onDeleteClick={() => handleDeleteClick(item.id)}
+                onEditClick={() => handleEditClick(item.id)}
+                isLoading={
+                  deleteListItemMutation.isLoading && item.id === deletingItemId
+                }
+                className="mb-6"
+              />
+            </Collapse>
+          ))}
+        </TransitionGroup>
       </ul>
       <Snackbar
         open={isFailureSnackbarOpened}

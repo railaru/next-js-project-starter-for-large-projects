@@ -6,10 +6,12 @@ specifiers:
   '@mui/material': ^5.10.6
   '@radix-ui/react-icons': ^1.1.1
   '@tanstack/react-query': ^4.6.0
+  '@tanstack/react-query-devtools': ^4.7.2
   '@trivago/prettier-plugin-sort-imports': ^3.3.0
   '@types/node': 18.7.19
   '@types/react': 18.0.21
   '@types/react-dom': 18.0.6
+  '@types/react-transition-group': ^4.4.5
   '@types/uuid': ^8.3.4
   '@types/yup': ^0.32.0
   '@typescript-eslint/eslint-plugin': ^5.38.0
@@ -30,6 +32,7 @@ specifiers:
   prettier: ^2.7.1
   react: 18.2.0
   react-dom: 18.2.0
+  react-transition-group: ^4.4.5
   tailwindcss: ^3.1.8
   typescript: 4.8.3
   typescript-eslint: 0.0.1-alpha.0
@@ -43,12 +46,15 @@ dependencies:
   '@mui/material': 5.10.6_ikcgkdnp4bn3rgptamntbhbo7e
   '@radix-ui/react-icons': 1.1.1_react@18.2.0
   '@tanstack/react-query': 4.6.0_biqbaboplfbrettd7655fr4n2y
+  '@tanstack/react-query-devtools': 4.7.2_35w334xqtbzboqulr5pz522esm
+  '@types/react-transition-group': 4.4.5
   axios: 0.27.2
   classnames: 2.3.2
   formik: 2.2.9_react@18.2.0
   next: 12.3.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
   uuid: 9.0.0
   yup: 0.32.11
   zustand: 4.1.1_react@18.2.0
@@ -894,8 +900,29 @@ packages:
       defer-to-connect: 1.1.3
     dev: true
 
+  /@tanstack/match-sorter-utils/8.1.1:
+    resolution: {integrity: sha512-IdmEekEYxQsoLOR0XQyw3jD1GujBpRRYaGJYQUw1eOT1eUugWxdc7jomh1VQ1EKHcdwDLpLaCz/8y4KraU4T9A==}
+    engines: {node: '>=12'}
+    dependencies:
+      remove-accents: 0.4.2
+    dev: false
+
   /@tanstack/query-core/4.6.0:
     resolution: {integrity: sha512-8b+vwooh8b4z1bIT3Ca7OVSyARM5JNbXi6F+g5VLYiflRd0AtJ+koqhin7UGhR11bbypmzVRKllWHwexWjKjDg==}
+    dev: false
+
+  /@tanstack/react-query-devtools/4.7.2_35w334xqtbzboqulr5pz522esm:
+    resolution: {integrity: sha512-Dia8EaesGvZeWVFsDnSd98cbNi16+s74glAjrjFigtvUNQKziBqYKMzBpFwFMNfMJbaZlx4b4V5DeJh7hkKfvA==}
+    peerDependencies:
+      '@tanstack/react-query': 4.7.2
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/match-sorter-utils': 8.1.1
+      '@tanstack/react-query': 4.6.0_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
   /@tanstack/react-query/4.6.0_biqbaboplfbrettd7655fr4n2y:
@@ -3751,6 +3778,10 @@ packages:
     dependencies:
       rc: 1.2.8
     dev: true
+
+  /remove-accents/0.4.2:
+    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
+    dev: false
 
   /require-directory/2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}

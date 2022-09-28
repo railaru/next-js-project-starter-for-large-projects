@@ -9,16 +9,17 @@ import IconDisplay, {
   IconSizes,
 } from 'components/presentationals/IconDisplay/IconDisplay';
 import InputFieldSet from 'components/presentationals/InputFieldSet/InputFieldSet';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 
 import * as yup from 'yup';
 
 import useModalsStore from 'store/modals';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postListItem } from 'api/mutations/example-list';
+
 import { QUERY_KEYS } from 'constants/api';
 import Button from 'components/presentationals/Button/Button';
+import { patchListItem } from 'api/mutations/example-list';
 
 function EditListItemModal() {
   const {
@@ -42,22 +43,7 @@ function EditListItemModal() {
       .required('Field is required'),
   });
 
-  const formik = useFormik({
-    initialValues: {
-      title: data?.values?.title || '',
-      description: data?.values?.description || '',
-    },
-    validationSchema,
-    onSubmit: (values) => {
-      patchListItemMutation.mutate({
-        id: data?.values?.id || '',
-        title: values.title,
-        description: values.description,
-      });
-    },
-  });
-
-  const patchListItemMutation = useMutation(postListItem, {
+  const patchListItemMutation = useMutation(patchListItem, {
     onSuccess: async (res) => {
       if (res.errorMessage) {
         setIsFailureAlertOpened(true);
@@ -76,35 +62,27 @@ function EditListItemModal() {
     setIsFailureAlertOpened(false);
   };
 
-  const descriptionElementRef = React.useRef<HTMLElement>(null);
+  const formik = useFormik({
+    initialValues: {
+      title: data?.values?.title || '',
+      description: data?.values?.description || '',
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      patchListItemMutation.mutate({
+        id: data?.values?.id || '',
+        title: values.title,
+        description: values.description,
+      });
+    },
+  });
+
   const {
     handleChange,
     values: { title, description },
     handleSubmit,
     errors,
   } = formik;
-
-  useEffect(() => {
-    if (isEditListItemModalOpened) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [isEditListItemModalOpened]);
-
-  useEffect(() => {
-    if (
-      data?.values &&
-      formik.values.title !== data?.values?.title &&
-      formik.values.description !== data?.values?.description
-    ) {
-      formik.setValues({
-        title: data?.values?.title || '',
-        description: data?.values?.description || '',
-      });
-    }
-  }, [data, formik]);
 
   return (
     <>
@@ -116,7 +94,7 @@ function EditListItemModal() {
         aria-describedby="scroll-dialog-description"
       >
         <div className="flex items-center justify-between py-4 pl-6 pr-4">
-          <h3 className="text-xl font-medium">Subscribe</h3>
+          <h3 className="text-xl font-medium">Edit list item</h3>
           <IconButton
             onClick={() => setIsEditListItemModalOpened(false)}
             size="large"
@@ -126,9 +104,8 @@ function EditListItemModal() {
         </div>
 
         <DialogContent className="w-[600px]">
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : (
+          {isLoading && <p>Loading...</p>}
+          {data?.values && (
             <div>
               <form onSubmit={handleSubmit} className="space-y-8">
                 <InputFieldSet

@@ -67,3 +67,33 @@ export async function postListItem(payload: ExampleItem) {
     }
   }
 }
+
+export async function patchListItem(payload: ExampleItem) {
+  try {
+    const { data } = await axios.patch(
+      `${process.env.NEXT_PUBLIC_MOCK_API_ROOT}/list/${payload.id}`,
+      payload
+    );
+
+    return {
+      values: data,
+      errorMessage: null,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      errorLogger('patchListItem error message: ', error.message);
+
+      return {
+        values: null,
+        errorMessage: error.message,
+      };
+    } else {
+      errorLogger('patchListItem unexpected error: ', error);
+
+      return {
+        values: null,
+        errorMessage: 'An unexpected error occurred',
+      };
+    }
+  }
+}

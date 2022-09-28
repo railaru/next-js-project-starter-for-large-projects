@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import type { AppProps } from 'next/app';
 import {
   DehydratedState,
@@ -6,6 +7,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import 'styles/globals.css';
 
@@ -20,6 +22,7 @@ function MyApp({
       <Hydrate state={pageProps.dehydratedState}>
         <Component {...pageProps} />
       </Hydrate>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

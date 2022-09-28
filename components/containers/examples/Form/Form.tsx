@@ -19,11 +19,11 @@ function Form() {
   const validationSchema = yup.object({
     title: yup
       .string()
-      .min(8, 'Minimum 8 characters')
+      .min(4, 'Minimum 4 characters')
       .required('Field is required'),
     description: yup
       .string()
-      .min(8, 'Minimum 8 characters')
+      .min(4, 'Minimum 4 characters')
       .required('Field is required'),
   });
 
