@@ -35,11 +35,11 @@ function EditListItemModal() {
   const validationSchema = yup.object({
     title: yup
       .string()
-      .min(8, 'Minimum 8 characters')
+      .min(4, 'Minimum 4 characters')
       .required('Field is required'),
     description: yup
       .string()
-      .min(8, 'Minimum 8 characters')
+      .min(4, 'Minimum 4 characters')
       .required('Field is required'),
   });
 
@@ -48,6 +48,9 @@ function EditListItemModal() {
       if (res.errorMessage) {
         setIsFailureAlertOpened(true);
       } else {
+        queryClient.invalidateQueries([
+          QUERY_KEYS.EXAMPLE_LIST.ITEM(editListItemId),
+        ]);
         queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
         setIsEditListItemModalOpened(false);
       }
@@ -75,6 +78,7 @@ function EditListItemModal() {
         description: values.description,
       });
     },
+    enableReinitialize: true,
   });
 
   const {
@@ -83,6 +87,15 @@ function EditListItemModal() {
     handleSubmit,
     errors,
   } = formik;
+
+  // useEffect(() => {
+  //   if (data?.values?.title === undefined) {
+  //     formik.setFieldValue('title', data?.values?.title);
+  //   }
+  //   if (data?.values?.description === undefined) {
+  //     formik.setFieldValue('description', data?.values?.title);
+  //   }
+  // }, [data?.values?.title, data?.values?.description, formik]);
 
   return (
     <>
@@ -93,18 +106,33 @@ function EditListItemModal() {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <div className="flex items-center justify-between py-4 pl-6 pr-4">
+        <div className="flex items-center justify-between py-4 pl-6 pr-4 dark:bg-slate-600 dark:text-white">
           <h3 className="text-xl font-medium">Edit list item</h3>
           <IconButton
             onClick={() => setIsEditListItemModalOpened(false)}
             size="large"
           >
-            <IconDisplay name={IconNames.Cross} size={IconSizes.Large} />
+            <IconDisplay
+              name={IconNames.Cross}
+              size={IconSizes.Large}
+              className="dark:stroke-white"
+            />
           </IconButton>
         </div>
 
-        <DialogContent className="w-[600px]">
-          {isLoading && <p>Loading...</p>}
+        <DialogContent className="w-[600px] dark:bg-slate-600">
+          {isLoading && (
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <div className="h-[15px] w-[40px] bg-gray-200 rounded-lg dark:bg-gray-700"></div>
+                <div className="h-[40px] bg-gray-200 rounded-lg dark:bg-gray-700"></div>
+              </div>
+              <div className="space-y-4">
+                <div className="h-[15px] w-[40px] bg-gray-200 rounded-lg dark:bg-gray-700"></div>
+                <div className="h-[40px] bg-gray-200 rounded-lg dark:bg-gray-700"></div>
+              </div>
+            </div>
+          )}
           {data?.values && (
             <div>
               <form onSubmit={handleSubmit} className="space-y-8">
@@ -138,10 +166,9 @@ function EditListItemModal() {
             </div>
           )}
         </DialogContent>
-        <DialogActions>
+        <DialogActions className="dark:bg-slate-600">
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit}>
-            {' '}
             {isLoading ? 'Loading...' : 'Submit'}
           </Button>
         </DialogActions>
