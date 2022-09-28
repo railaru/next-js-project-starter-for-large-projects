@@ -88,15 +88,6 @@ function EditListItemModal() {
     errors,
   } = formik;
 
-  // useEffect(() => {
-  //   if (data?.values?.title === undefined) {
-  //     formik.setFieldValue('title', data?.values?.title);
-  //   }
-  //   if (data?.values?.description === undefined) {
-  //     formik.setFieldValue('description', data?.values?.title);
-  //   }
-  // }, [data?.values?.title, data?.values?.description, formik]);
-
   return (
     <>
       <Dialog
