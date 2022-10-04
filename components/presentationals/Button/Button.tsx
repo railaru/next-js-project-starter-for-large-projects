@@ -45,7 +45,7 @@ function Button({
           <span>{children}</span>
           <span>
             <CircularProgress
-              size={18}
+              size={15}
               className="relative top-[3px]"
               color="inherit"
             />

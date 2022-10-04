@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "mock-api": "json-server --watch ./mock-api/index.json",
-    "test:unit": "jest --config jest.config.js"
+    "test:unit": "jest --config jest.config.js",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -30,6 +32,15 @@
     "zustand": "^4.1.1"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.5.12",
+    "@storybook/addon-essentials": "^6.5.12",
+    "@storybook/addon-interactions": "^6.5.12",
+    "@storybook/addon-links": "^6.5.12",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/builder-webpack5": "^6.5.12",
+    "@storybook/manager-webpack5": "^6.5.12",
+    "@storybook/react": "^6.5.12",
+    "@storybook/testing-library": "^0.0.13",
     "@trivago/prettier-plugin-sort-imports": "^3.3.0",
     "@types/jest": "^29.1.1",
     "@types/node": "18.7.19",
