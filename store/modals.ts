@@ -1,8 +1,6 @@
 import create from 'zustand';
 
 interface ModalsStore {
-  isExampleModalOpened: boolean;
-  setIsExampleModalOpened: (payload: boolean) => void;
   isEditListItemModalOpened: boolean;
   setIsEditListItemModalOpened: (payload: boolean) => void;
   editListItemId: string;
@@ -10,11 +8,6 @@ interface ModalsStore {
 }
 
 const useModalsStore = create<ModalsStore>((set) => ({
-  isExampleModalOpened: false,
-  setIsExampleModalOpened: (payload: boolean) =>
-    set(() => ({
-      isExampleModalOpened: payload,
-    })),
   isEditListItemModalOpened: false,
   setIsEditListItemModalOpened: (payload: boolean) => {
     set(() => ({
