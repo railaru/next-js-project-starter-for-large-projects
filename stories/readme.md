@@ -1,1 +1,0 @@
-Storybook requires a stories folder to exist at the root of your project.
