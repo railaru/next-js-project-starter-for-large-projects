@@ -11,10 +11,12 @@ interface Props {
 }
 
 function Basic({ head, children }: Props) {
+  const formattedTitle = `${head.title} - ${process.env.NEXT_PUBLIC_PROJECT_NAME}`;
+
   return (
     <>
       <Head>
-        <title>{head.title}</title>
+        <title>{formattedTitle}</title>
         {head.description && (
           <meta name="description" content={head.description} />
         )}

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import type { AppProps } from 'next/app';
 import {
-  DehydratedState,
   Hydrate,
   QueryClient,
   QueryClientProvider,
@@ -10,21 +9,28 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import 'styles/globals.css';
+import { appWithTranslation } from 'next-i18next';
+import { ThemeProvider, createTheme } from '@mui/material';
 
-function MyApp({
-  Component,
-  pageProps,
-}: AppProps<{ dehydratedState: DehydratedState }>) {
+const theme = createTheme({
+  typography: {
+    fontFamily: ['Inter', 'sans-serif'].join(','),
+  },
+});
+
+function MyApp({ Component, pageProps }: AppProps<any>) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Component {...pageProps} />
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </Hydrate>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);
