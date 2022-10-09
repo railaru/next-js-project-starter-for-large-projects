@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postListItem } from 'api/mutations/example-list';
 import { QUERY_KEYS } from 'constants/api';
 import { Alert, Snackbar } from '@mui/material';
+import { E2E_TEST_DOM_ELEMENTS } from '../../../../constants/e2e';
 
 function Form() {
   const queryClient = useQueryClient();
@@ -32,7 +33,7 @@ function Form() {
       if (res.errorMessage) {
         setIsFailureSnackbarOpened(true);
       } else {
-        queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
+        await queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
         setIsSuccessSnackbarOpened(true);
       }
     },
@@ -69,7 +70,11 @@ function Form() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form
+        data-test={E2E_TEST_DOM_ELEMENTS.EXAMPLE_FORM}
+        onSubmit={handleSubmit}
+        className="space-y-8"
+      >
         <InputFieldSet
           labelContent={'Title'}
           name={'title'}
