@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+Use pnpm as the recommended package manager.
+
 ENV variables:
 
 Copy the values from `.env.template` to `.env.local` and fill in the values.
