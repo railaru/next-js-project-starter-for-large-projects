@@ -9,7 +9,7 @@
     "lint": "next lint",
     "mock-api": "json-server --watch ./mock-api/index.json",
     "test:unit": "jest --watch",
-    "cypress": "cypress open",
+    "test:e2e": "cypress open",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
