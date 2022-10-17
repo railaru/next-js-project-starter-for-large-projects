@@ -20,6 +20,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'constants/api';
 import Button from 'components/presentationals/Button/Button';
 import { patchListItem } from 'api/mutations/example-list';
+import EditListModalSkeleton from './EditListItemModalSkeleton';
 
 function EditListItemModal() {
   const {
@@ -48,10 +49,10 @@ function EditListItemModal() {
       if (res.errorMessage) {
         setIsFailureAlertOpened(true);
       } else {
-        queryClient.invalidateQueries([
+        await queryClient.invalidateQueries([
           QUERY_KEYS.EXAMPLE_LIST.ITEM(editListItemId),
         ]);
-        queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
+        await queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
         setIsEditListItemModalOpened(false);
       }
     },
@@ -112,18 +113,7 @@ function EditListItemModal() {
         </div>
 
         <DialogContent className="w-[600px] dark:bg-slate-600">
-          {isLoading && (
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <div className="h-[15px] w-[40px] bg-gray-200 rounded-lg dark:bg-gray-700"></div>
-                <div className="h-[40px] bg-gray-200 rounded-lg dark:bg-gray-700"></div>
-              </div>
-              <div className="space-y-4">
-                <div className="h-[15px] w-[40px] bg-gray-200 rounded-lg dark:bg-gray-700"></div>
-                <div className="h-[40px] bg-gray-200 rounded-lg dark:bg-gray-700"></div>
-              </div>
-            </div>
-          )}
+          {isLoading && <EditListModalSkeleton />}
           {data?.values && (
             <div>
               <form onSubmit={handleSubmit} className="space-y-8">
