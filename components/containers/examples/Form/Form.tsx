@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import * as yup from 'yup';
+
 import { useFormik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,23 +10,20 @@ import { postListItem } from 'api/mutations/example-list';
 import { QUERY_KEYS } from 'constants/api';
 import { Alert, Snackbar } from '@mui/material';
 import { E2E_TEST_DOM_ELEMENTS } from '../../../../constants/e2e';
+import { TRANSLATION_NAMESPACES } from 'next-18next.config';
+import { useTranslation } from 'next-i18next';
+import { useListItemValidation } from '../../../../hooks/validation/examples/useListItemValidation';
+
+const { COMMON } = TRANSLATION_NAMESPACES;
 
 function Form() {
   const queryClient = useQueryClient();
+  const { t } = useTranslation([COMMON]);
 
   const [isSuccessSnackbarOpened, setIsSuccessSnackbarOpened] = useState(false);
   const [isFailureSnackbarOpened, setIsFailureSnackbarOpened] = useState(false);
 
-  const validationSchema = yup.object({
-    title: yup
-      .string()
-      .min(4, 'Minimum 4 characters')
-      .required('Field is required'),
-    description: yup
-      .string()
-      .min(4, 'Minimum 4 characters')
-      .required('Field is required'),
-  });
+  const validationSchema = useListItemValidation();
 
   const postListItemMutation = useMutation(postListItem, {
     onSuccess: async (res) => {
@@ -76,21 +73,21 @@ function Form() {
         className="space-y-8"
       >
         <InputFieldSet
-          labelContent={'Title'}
+          labelContent={t(`${COMMON}:title`)}
           name={'title'}
           value={title}
           onChange={handleChange}
           validationMessageContent={errors.title}
         />
         <InputFieldSet
-          labelContent={'Description'}
+          labelContent={t(`${COMMON}:description`)}
           name={'description'}
           value={description}
           onChange={handleChange}
           validationMessageContent={errors.description}
         />
         <Button isLoading={isLoading} type="submit">
-          {isLoading ? 'Loading...' : 'Submit'}
+          {isLoading ? t(`${COMMON}:loading`) : t(`${COMMON}:submit`)}
         </Button>
       </form>
       <Snackbar
@@ -104,7 +101,7 @@ function Form() {
           severity="success"
           sx={{ width: '100%' }}
         >
-          Item successfully added!
+          {t(`${COMMON}:item_successfully_added`)}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -118,7 +115,7 @@ function Form() {
           severity="error"
           sx={{ width: '100%' }}
         >
-          Failed to add the item!
+          {t(`${COMMON}:failed_to_add_item`)}
         </Alert>
       </Snackbar>
     </>

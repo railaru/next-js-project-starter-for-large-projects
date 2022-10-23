@@ -1,3 +1,16 @@
 {
-  "examples_page": "Pavyzdžių puslapis"
+  "examples_page": "Pavyzdžių puslapis",
+  "minimum": "Bent",
+  "characters": "simboliai",
+  "field_is_required": "Laukas privalomas",
+  "title": "Pavadinimas",
+  "description": "Aprašymas",
+  "loading": "Kraunama...",
+  "submit": "Pateikti",
+  "item_successfully_added": "Elementas sėkmingai pridėtas!",
+  "failed_to_add_item": "Nepavyko pridėti elemento!",
+  "edit_list_item": "Redaguoti sąrašo elementą",
+  "failed_to_update_item": "Nepavyko atnaujinti elemento!",
+  "allows_you_to_edit_list_items": "Leidžia redaguoti sąrašo elementus.",
+  "cancel": "Cancel"
 }

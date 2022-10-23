@@ -9,10 +9,22 @@ import List from 'components/containers/examples/List/List';
 
 import { QUERY_KEYS } from 'constants/api';
 import { fetchListItems } from 'api/queries/example-list';
+import { i18n, TRANSLATION_NAMESPACES } from '../../next-18next.config';
+import { Locales } from '../../models/localization';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
+
+const { HEAD, COMMON } = TRANSLATION_NAMESPACES;
 
 function Example() {
+  const { t } = useTranslation([COMMON]);
+
   return (
-    <Basic head={{ title: 'Example' }}>
+    <Basic
+      head={{
+        title: t(`${HEAD}:examples`),
+      }}
+    >
       <div className="space-y-4">
         <div className="grid gap-8 lg:grid-cols-2">
           <Form />
@@ -23,7 +35,7 @@ function Example() {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ locale }: { locale: Locales }) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(
@@ -34,6 +46,9 @@ export async function getServerSideProps() {
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      ...(await serverSideTranslations(locale, [HEAD, COMMON], {
+        i18n,
+      })),
     },
   };
 }

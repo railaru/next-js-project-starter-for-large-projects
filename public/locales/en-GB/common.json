@@ -1,3 +1,16 @@
 {
-  "examples_page": "Examples page"
+  "examples_page": "Examples page",
+  "minimum": "Minimum",
+  "characters": "characters",
+  "field_is_required": "Field is required",
+  "title": "Title",
+  "description": "Description",
+  "loading": "Loading...",
+  "submit": "Submit",
+  "item_successfully_added": "Item successfully added!",
+  "failed_to_add_item": "Failed to add the item!",
+  "edit_list_item": "Edit list item",
+  "failed_to_update_item": "Failed to update the item!",
+  "allows_you_to_edit_list_items": "Allows you to edit list items",
+  "cancel": "Cancel"
 }

@@ -1,4 +1,4 @@
-import { Alert, Collapse, Fade, Snackbar } from '@mui/material';
+import { Alert, Collapse, Snackbar } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteListItem } from 'api/mutations/example-list';
 import { useGetListItems } from 'api/queries/example-list';
@@ -12,9 +12,15 @@ import useModalsStore from 'store/modals';
 import IconDisplay, {
   IconNames,
 } from 'components/presentationals/IconDisplay/IconDisplay';
+import { TRANSLATION_NAMESPACES } from '../../../../next-18next.config';
+import { useTranslation } from 'next-i18next';
+
+const { COMMON } = TRANSLATION_NAMESPACES;
 
 function List() {
   const queryClient = useQueryClient();
+  const { t } = useTranslation([COMMON]);
+
   const { data } = useGetListItems();
   const { setIsEditListItemModalOpened, setEditListItemId } = useModalsStore();
   const [deletingItemId, setDeletingItemId] = useState<null | string>(null);
@@ -25,7 +31,7 @@ function List() {
       if (res.errorMessage) {
         setIsFailureSnackbarOpened(true);
       } else {
-        queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
+        await queryClient.invalidateQueries([QUERY_KEYS.EXAMPLE_LIST.INDEX]);
       }
     },
   });
@@ -91,7 +97,7 @@ function List() {
           severity="error"
           sx={{ width: '100%' }}
         >
-          Failed to add the item!
+          {t(`${COMMON}:failed_to_add_item`)}
         </Alert>
       </Snackbar>
     </>

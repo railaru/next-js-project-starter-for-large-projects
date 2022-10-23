@@ -9,22 +9,21 @@ import { Locales } from '../models/localization';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+const { HEAD, COMMON } = TRANSLATION_NAMESPACES;
+
 function Home() {
-  const { t } = useTranslation([
-    TRANSLATION_NAMESPACES.HEAD,
-    TRANSLATION_NAMESPACES.COMMON,
-  ]);
+  const { t } = useTranslation([HEAD, COMMON]);
 
   return (
     <Basic
       head={{
-        title: t(`${TRANSLATION_NAMESPACES.HEAD}:homepage`),
+        title: t(`${HEAD}:homepage`),
       }}
     >
       <div className="flex justify-center items-center h-screen">
         <Link href={ROUTES.EXAMPLES}>
           <a data-test={E2E_TEST_DOM_ELEMENTS.EXAMPLES_LINK}>
-            {t(`${TRANSLATION_NAMESPACES.COMMON}:examples_page`)}
+            {t(`${COMMON}:examples_page`)}
           </a>
         </Link>
       </div>
@@ -35,13 +34,9 @@ function Home() {
 export async function getServerSideProps({ locale }: { locale: Locales }) {
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        [TRANSLATION_NAMESPACES.HEAD, TRANSLATION_NAMESPACES.COMMON],
-        {
-          i18n,
-        }
-      )),
+      ...(await serverSideTranslations(locale, [HEAD, COMMON], {
+        i18n,
+      })),
     },
   };
 }
